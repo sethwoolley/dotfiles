@@ -16,6 +16,9 @@ return {
     },
   },
 
+  -- copilot lualine integration
+  { 'AndreM222/copilot-lualine' },
+
   -- extend a/i textobjects
   {
     'echasnovski/mini.ai',
