@@ -10,7 +10,7 @@
             git clean -ffdx && \
             git submodule foreach --recursive git clean -ffdx
     # search recent commits and make fixup commit
-    fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
+    fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
     # Amend COMMIT
     acommit = commit --amend --no-edit
 
