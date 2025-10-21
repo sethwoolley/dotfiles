@@ -13,6 +13,8 @@
     fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
     # Amend COMMIT
     acommit = commit --amend --no-edit
+    # Force COMMIT
+    fcommit = commit --no-verify
 
     # self explanatory
     unstage = restore --staged
