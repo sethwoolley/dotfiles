@@ -21,6 +21,17 @@ alias resource='source ~/.bashrc'
 alias fkill="ps -ax | fzf | awk '{print $1}' | xargs kill"
 alias imgcat="wezterm imgcat"
 
+# Stonks
+alias stonks='curl terminal-stocks.dev/ARM,AMD'
+stock() {
+    if [ -z "$1" ]; then
+        echo "Usage: stock SYMBOL"
+        return 1
+    fi
+    curl -s "terminal-stocks.dev/$1"
+}
+
+
 # PROMPT
 host_name() {
     # check for $DOTFILE_HOSTNAME, use that if present
