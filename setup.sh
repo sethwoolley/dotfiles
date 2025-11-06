@@ -9,6 +9,7 @@
 NEOVIM_VERSION="v0.11.3"
 WEZTERM_VERSION="20240203-110809-5046fc22"
 FORCE_INSTALL=""
+ARCH=""
 
 GIT_NAME_DEFAULT="Seth Woolley"
 GIT_EMAIL_DEFAULT="seth.w.public@proton.me"
@@ -24,6 +25,7 @@ help () {
     echo "  -h, --help        Show this help message and exit"
     echo "  -n, --nvim        Install Neovim version (Default is $NEOVIM_VERSION)"
     echo "  -w, --wezterm     Install Wezterm version (Default is $WEZTERM_VERSION)"
+    echo "  -a, --arch        Architecture to use. Will try to work it out if not set."
     echo "  -f, --force       Force installation despite checks"
     echo "  --iamseth         Run with settings for Seth"
     echo ""
@@ -37,6 +39,7 @@ while [[ "$#" -gt 0 ]]; do
         -w|--wezterm) WEZTERM_VERSION="$2"; shift ;;
         -f|--force) FORCE_INSTALL=true ;;
         --iamseth) IAMSETH=true ;;
+        -a|--arch) ARCH="$2"; shift ;;
         *) echo "Unknown parameter passed: $1"; help; exit 1 ;;
     esac
     shift
@@ -77,7 +80,11 @@ else
     fi
 fi
 
-banner "Starting setup"
+if [ -z "$ARCH" ] ; then
+    ARCH=$(uname -a | grep -Eo '(x86_64|arm64)' | head -n1)
+fi
+
+banner "Starting setup for arch $ARCH"
 mkdir -p ~/bin
 mkdir -p ~/scripts
 mkdir -p ~/code
@@ -101,7 +108,7 @@ cat << EOF > ~/.gituser
 EOF
 
 banner "Installing nvim from appimage"
-wget -O ~/bin/nvim.appimage https://github.com/neovim/neovim/releases/download/$NEOVIM_VERSION/nvim-linux-arm64.appimage
+wget -O ~/bin/nvim.appimage https://github.com/neovim/neovim/releases/download/$NEOVIM_VERSION/nvim-linux-$ARCH.appimage
 chmod u+x ~/bin/nvim.appimage
 ln -s ~/bin/nvim.appimage ~/bin/nvim
 
