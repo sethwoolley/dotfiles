@@ -1,6 +1,6 @@
 [alias]
     # Branch LOG
-    blog = log -p master..
+    blog = log -p main..
     # Overview log
     olog = log --graph --oneline --all
     # absolutely nuke the repo and all submodules
