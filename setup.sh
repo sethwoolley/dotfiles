@@ -56,6 +56,22 @@ if [ "$(realpath $(pwd))" != "$(realpath $HOME/.config/dotfiles)" ] && [ -z "$FO
     exit 1
 fi
 
+# check we are running ubuntu
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "$ID" != "ubuntu" ] && [ -z "$FORCE_INSTALL" ]; then
+        warn "This script is designed for Ubuntu, but your OS is detected as $NAME."
+        warn "Rerun with --force to continue anyway."
+        exit 1
+    fi
+else
+    warn "/etc/os-release not found. Cannot determine OS."
+    if [ -z "$FORCE_INSTALL" ]; then
+        warn "Rerun with --force to continue anyway."
+        exit 1
+    fi
+fi
+
 banner "Starting setup"
 mkdir -p ~/bin
 mkdir -p ~/scripts
