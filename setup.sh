@@ -7,7 +7,6 @@
 # - Check OS installing on (currently ubuntu only)
 
 NEOVIM_VERSION="v0.11.3"
-WEZTERM_VERSION="20240203-110809-5046fc22"
 FORCE_INSTALL=""
 ARCH=""
 
@@ -24,7 +23,6 @@ help () {
     echo "Options:"
     echo "  -h, --help        Show this help message and exit"
     echo "  -n, --nvim        Install Neovim version (Default is $NEOVIM_VERSION)"
-    echo "  -w, --wezterm     Install Wezterm version (Default is $WEZTERM_VERSION)"
     echo "  -a, --arch        Architecture to use. Will try to work it out if not set."
     echo "  -f, --force       Force installation despite checks"
     echo "  --iamseth         Run with settings for Seth"
@@ -36,7 +34,6 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
         -h|--help) help; exit 0 ;;
         -n|--nvim) NEOVIM_VERSION="$2"; shift ;;
-        -w|--wezterm) WEZTERM_VERSION="$2"; shift ;;
         -f|--force) FORCE_INSTALL=true ;;
         --iamseth) IAMSETH=true ;;
         -a|--arch) ARCH="$2"; shift ;;
@@ -120,15 +117,17 @@ if [ $? -ne 0 ]; then
     warn "Neovim installation failed"
 fi
 
-banner "Installing wezterm from appimage"
-wget -O ~/bin/wezterm.appimage https://github.com/wezterm/wezterm/releases/download/$WEZTERM_VERSION/WezTerm-$WEZTERM_VERSION-Ubuntu20.04.AppImage
-chmod u+x ~/bin/wezterm.appimage
-ln -s ~/bin/wezterm.appimage ~/bin/wezterm
+banner "Installing wezterm"
+# yoinked from https://wezterm.org/install/linux.html
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
+sudo apt install wezterm
 
 # symlink config to dotfiles
 ln -s ~/.config/dotfiles/wezterm ~/.config/wezterm
 
-~/bin/wezterm --version
+wezterm --version
 if [ $? -ne 0 ]; then
     warn "Wezterm installation failed"
 fi
