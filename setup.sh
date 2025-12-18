@@ -77,8 +77,20 @@ mkdir -p ~/bin
 mkdir -p ~/scripts
 mkdir -p ~/code
 ln -s ~/.config/dotfiles/.gitconfig ~/.gitconfig
-# TODO: do this progmatically
-warn "Make sure to make ~/.gituser with your user details!"
+
+# set ~/.gituser file
+if [ -n "$GIT_USER" ] && [ -n "$GIT_EMAIL" ]; then
+    GIT_NAME="$GIT_USER"
+    GIT_EMAIL="$GIT_EMAIL"
+else
+    read -p "Enter your git user.name: " GIT_NAME
+    read -p "Enter your git user.email: " GIT_EMAIL
+fi
+cat << EOF > ~/.gituser
+[user]
+    name = $GIT_NAME
+    email = $GIT_EMAIL
+EOF
 
 banner "Installing nvim from appimage"
 wget -O ~/bin/nvim.appimage https://github.com/neovim/neovim/releases/download/$NEOVIM_VERSION/nvim-linux-arm64.appimage

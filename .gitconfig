@@ -22,6 +22,8 @@
 [core]
 	editor = nvim
 [include]
+    # Get git user/email from another file, so when using these dotfiles on a work
+    # system, it's easier to set up.
     path = ~/.gituser
 
 # Lots of the justifications for these settings are from:
