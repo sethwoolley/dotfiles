@@ -10,6 +10,9 @@ NEOVIM_VERSION="v0.11.3"
 WEZTERM_VERSION="20240203-110809-5046fc22"
 FORCE_INSTALL=""
 
+GIT_NAME_DEFAULT="Seth Woolley"
+GIT_EMAIL_DEFAULT="seth.w.public@proton.me"
+
 COLOUR_RESET='\e[0m'
 COLOUR_YELLOW='\e[38;5;228m'
 COLOUR_ORANGE='\e[38;5;208m'
@@ -22,6 +25,7 @@ help () {
     echo "  -n, --nvim        Install Neovim version (Default is $NEOVIM_VERSION)"
     echo "  -w, --wezterm     Install Wezterm version (Default is $WEZTERM_VERSION)"
     echo "  -f, --force       Force installation despite checks"
+    echo "  --iamseth         Run with settings for Seth"
     echo ""
 }
 
@@ -32,6 +36,7 @@ while [[ "$#" -gt 0 ]]; do
         -n|--nvim) NEOVIM_VERSION="$2"; shift ;;
         -w|--wezterm) WEZTERM_VERSION="$2"; shift ;;
         -f|--force) FORCE_INSTALL=true ;;
+        --iamseth) IAMSETH=true ;;
         *) echo "Unknown parameter passed: $1"; help; exit 1 ;;
     esac
     shift
@@ -82,6 +87,9 @@ ln -s ~/.config/dotfiles/.gitconfig ~/.gitconfig
 if [ -n "$GIT_USER" ] && [ -n "$GIT_EMAIL" ]; then
     GIT_NAME="$GIT_USER"
     GIT_EMAIL="$GIT_EMAIL"
+elif [ "$IAMSETH" == "true" ]; then
+    GIT_NAME="$GIT_NAME_DEFAULT"
+    GIT_EMAIL="$GIT_EMAIL_DEFAULT"
 else
     read -p "Enter your git user.name: " GIT_NAME
     read -p "Enter your git user.email: " GIT_EMAIL
@@ -117,6 +125,9 @@ ln -s ~/.config/dotfiles/wezterm ~/.config/wezterm
 if [ $? -ne 0 ]; then
     warn "Wezterm installation failed"
 fi
+
+banner "Symlink i3"
+ln -s ~/.config/dotfiles/i3 ~/.config/i3
 
 banner "Installing fzf from git"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
