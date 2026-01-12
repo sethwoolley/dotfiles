@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+BASE="main"
+
+help () {
+    echo
+    echo "3rb - RenamedBashscript to RoBo ReBase"
+    echo
+    echo "Usage:"
+    echo "- 3rb [BASE]"
+    echo "aka rebase -i [BASE], but auto-format each commit with ruff"
+    echo "exits if it hits a merge conflict"
+    echo
+    echo "- 3rb -r"
+    echo "Resumes 3rb after resolving a merge conflict manually"
+    echo
+    echo "Description:"
+    echo "Will run black3 and isort on every commit between [BASE] and"
+    echo "HEAD, and git commit --amend any changes. Exits if it hits a"
+    echo "merge conflict or if anything fails."
+    echo "Pauses at the end of the interactive rebase to allow user to:"
+    echo "git rebase --abort      : if anything went wrong"
+    echo "git rebase --continue   : if it went right"
+    echo
+}
+
+prettify_commit () {
+    files=$(git diff-tree --no-commit-id --name-only HEAD)
+    # run ruff
+    uv run ruff format $files
+    uv run ruff check --fix
+    git commit --amend --no-edit -a
+}
+
+rebase_loop () {
+    until ! git rev-parse --short --verify REBASE_HEAD > /dev/null
+    do
+
+        echo
+        # prettify
+        prettify_commit
+        # gap
+        echo =------------------=
+        echo
+        # continue rebase
+        if ( ! git rebase --continue ) then
+            # something failed, print diff, exit
+            git --no-pager diff --check
+            exit $?
+        fi
+    done
+
+}
+
+rebase () {
+    GIT_SEQUENCE_EDITOR="sed -i -e 's/^pick/edit/' -e 's/^$/break/'" git rebase -i $BASE
+
+    rebase_loop
+}
+
+resume () {
+    if ( ! git rebase --continue ); then exit 1 ; fi
+
+    rebase_loop
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -b|--base)
+      BASE="$2"
+      shift
+      shift
+      ;;
+    -r|--resume)
+      RESUME="resume"
+      shift
+      ;;
+    -h|--help)
+      help
+      exit 0
+      ;;
+    *)
+      BASE="$1"
+      shift
+  esac
+done
+
+if [ ! -z $RESUME ]; then
+    resume
+    exit 0
+fi
+
+if [ -z $BASE ]; then
+    echo "Need to specify what to rebase onto"
+    echo "e.g. 3rb master"
+    exit 1
+fi
+
+rebase

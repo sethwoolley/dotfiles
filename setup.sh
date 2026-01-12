@@ -83,9 +83,9 @@ fi
 
 banner "Starting setup for arch $ARCH"
 mkdir -p ~/bin
-mkdir -p ~/scripts
 mkdir -p ~/code
 ln -s ~/.config/dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.config/dotfiles/scripts/ ~/scripts/
 
 # set ~/.gituser file
 if [ -n "$GIT_USER" ] && [ -n "$GIT_EMAIL" ]; then
