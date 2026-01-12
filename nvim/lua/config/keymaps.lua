@@ -1,4 +1,3 @@
-
 --Remap space as leader key
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
@@ -20,3 +19,7 @@ vim.keymap.set('n', '\\c',
         vim.cmd("set number!")
     end
 )
+
+-- ctrl+[/] to cycle through tabs
+vim.keymap.set('n', '<C-l>', ':tabnext<CR>', { desc = 'Next tab' })
+vim.keymap.set('n', '<C-h>', ':tabprevious<CR>', { desc = 'Previous tab' })
