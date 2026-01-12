@@ -28,9 +28,14 @@ return {
     lazy=false,
     priority=1000,
     opts = {
+      colors = {
+        dark_yellow = "require('onedarkpro.helpers').darken('yellow', 10, 'onedark')"
+      },
       highlights = {
         -- Highlighting every variable is far far too colourful
         ["@variable"] = { },
+        -- Dark mode search is hard to see
+        Search = { fg = '${black}', bg = '${dark_yellow}' },
       },
     },
   },
