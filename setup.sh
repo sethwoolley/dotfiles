@@ -137,7 +137,7 @@ ln -s ~/.config/dotfiles/i3 ~/.config/i3
 
 banner "Installing fzf from git"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install --no-update-rc --key-bindings --completion
+~/.fzf/install --no-update-rc --key-bindings --completion --no-zsh --no-fish
 
 banner "Writing .bashrc redirect"
 if [ -f ~/.bashrc ]; then
