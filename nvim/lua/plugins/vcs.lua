@@ -12,7 +12,7 @@ return {
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
-      current_line_blame_formatter = '      <committer> - <sha> - <summary>',
+      current_line_blame_formatter = '      <committer> - <abbrev_sha> - <summary>',
 
       on_attach = function(bufnr)
         local gitsigns = require('gitsigns')
@@ -51,18 +51,5 @@ return {
         )
       end,
     },
-  },
-
-  -- blame commit copying
-  {
-    'f-person/git-blame.nvim',
-    keys = {
-      {' bc', '<cmd>GitBlameCopySHA<CR>', desc = 'Git [b]lame [c]opy commit ID'},
-    },
-    opts = {
-      virtual_text_column = 0,
-      highlight_group = 'NonText',
-      message_template = '      <committer> - <sha> - <summary>',
-    }
   },
 }
