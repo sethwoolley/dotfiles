@@ -97,6 +97,9 @@ ln -s ~/.config/dotfiles/i3 ~/.config/i3
 banner "Installing fzf from git"
 setup/install_fzf.sh
 
+banner "Setting wallpaper"
+setup/set_wallpaper.sh
+
 banner "Writing .bashrc redirect"
 if [ -f ~/.bashrc ]; then
     run mv ~/.bashrc ~/.bashrc.bak
