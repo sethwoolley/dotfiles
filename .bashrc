@@ -21,6 +21,8 @@ alias resource='source ~/.bashrc'
 alias fkill="ps -ax | fzf | awk '{print $1}' | xargs kill"
 alias imgcat="wezterm imgcat"
 
+alias meq="squeue"
+
 # Stonks
 alias stonks='curl terminal-stocks.dev/ARM,AMD'
 stock() {
