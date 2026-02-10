@@ -12,7 +12,5 @@ The work-specific bashrc can export `$DOTFILE_HOSTNAME` to tell this bashrc what
 
 ## Dependencies
 
-wezterm and nvim are installed by `setup.sh` as AppImages. This is to avoid any issues with sudo.
-
 wezterm depends on Fira Code Nerd Font, which you can get from:
 https://www.nerdfonts.com/font-downloads
