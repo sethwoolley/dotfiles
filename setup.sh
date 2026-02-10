@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# TODO:
-# - Check for sudo
-#   - apt install nvim/wezterm rather than appimage
-#   - install rg
-# - Check OS installing on (currently ubuntu only)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+. $SCRIPT_DIR/setup/common.sh
 
 NEOVIM_VERSION="v0.11.3"
 FORCE_INSTALL=""
@@ -12,10 +9,6 @@ ARCH=""
 
 GIT_NAME_DEFAULT="Seth Woolley"
 GIT_EMAIL_DEFAULT="seth.w.public@proton.me"
-
-COLOUR_RESET='\e[0m'
-COLOUR_YELLOW='\e[38;5;228m'
-COLOUR_ORANGE='\e[38;5;208m'
 
 help () {
     echo "Usage: setup.sh [options]"
@@ -41,18 +34,6 @@ while [[ "$#" -gt 0 ]]; do
     esac
     shift
 done
-
-banner () {
-    # banner with yellow (i like yellow)
-    echo -e ""
-    echo -e "${COLOUR_YELLOW}============= $1 =============${COLOUR_RESET}"
-    echo -e ""
-}
-
-warn () {
-    # warn with orange (i hate orange)
-    echo -e "${COLOUR_ORANGE}WARNING: $1${COLOUR_RESET}"
-}
 
 # check we cloned to the right place - pwd should be ~/.config/dotfiles
 if [ "$(realpath $(pwd))" != "$(realpath $HOME/.config/dotfiles)" ] && [ -z "$FORCE_INSTALL" ]; then
@@ -82,10 +63,10 @@ if [ -z "$ARCH" ] ; then
 fi
 
 banner "Starting setup for arch $ARCH"
-mkdir -p ~/bin
-mkdir -p ~/code
-ln -s ~/.config/dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/.config/dotfiles/scripts/ ~/scripts/
+run mkdir -p ~/bin
+run mkdir -p ~/code
+run ln -s ~/.config/dotfiles/.gitconfig ~/.gitconfig
+run ln -s ~/.config/dotfiles/scripts/ ~/scripts/
 
 # set ~/.gituser file
 if [ -n "$GIT_USER" ] && [ -n "$GIT_EMAIL" ]; then
@@ -105,43 +86,20 @@ cat << EOF > ~/.gituser
 EOF
 
 banner "Installing nvim from appimage"
-wget -O ~/bin/nvim.appimage https://github.com/neovim/neovim/releases/download/$NEOVIM_VERSION/nvim-linux-$ARCH.appimage
-chmod u+x ~/bin/nvim.appimage
-ln -s ~/bin/nvim.appimage ~/bin/nvim
-
-# symlink config to dotfiles
-ln -s ~/.config/dotfiles/nvim ~/.config/nvim
-
-~/bin/nvim --version
-if [ $? -ne 0 ]; then
-    warn "Neovim installation failed"
-fi
+NEOVIM_VERSION=$NEOVIM_VERSION setup/install_nvim.sh
 
 banner "Installing wezterm"
-# yoinked from https://wezterm.org/install/linux.html
-curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
-echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
-sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
-sudo apt install wezterm
-
-# symlink config to dotfiles
-ln -s ~/.config/dotfiles/wezterm ~/.config/wezterm
-
-wezterm --version
-if [ $? -ne 0 ]; then
-    warn "Wezterm installation failed"
-fi
+setup/install_wezterm.sh
 
 banner "Symlink i3"
 ln -s ~/.config/dotfiles/i3 ~/.config/i3
 
 banner "Installing fzf from git"
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install --no-update-rc --key-bindings --completion --no-zsh --no-fish
+setup/install_fzf.sh
 
 banner "Writing .bashrc redirect"
 if [ -f ~/.bashrc ]; then
-    mv ~/.bashrc ~/.bashrc.bak
+    run mv ~/.bashrc ~/.bashrc.bak
     warn "Existing .bashrc moved to .bashrc.bak"
 fi
 cat << EOF > ~/.bashrc
@@ -150,5 +108,3 @@ if [ -f "$HOME/.config/dotfiles/.bashrc" ]; then
     source "$HOME/.config/dotfiles/.bashrc"
 fi
 EOF
-
-warn "Remember to set git config user.email"
