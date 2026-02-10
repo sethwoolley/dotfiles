@@ -1,24 +1,32 @@
 [alias]
+ 
     # Branch LOG
     blog = log -p main..
     # Overview log
     olog = log --graph --oneline --all
+    # above, but watched
+    blogwatch = "!watch -tc git log --oneline --graph --all --color=always --decorate"
+
     # absolutely nuke the repo and all submodules
     rinse = !git reset --hard --recurse-submodule && \
             git submodule sync --recursive && \
             git submodule update --init --force --recursive && \
             git clean -ffdx && \
             git submodule foreach --recursive git clean -ffdx
+    blat = reset --hard HEAD
+
     # search recent commits and make fixup commit
     fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
     # Amend COMMIT
     acommit = commit --amend --no-edit
     # Force COMMIT
     fcommit = commit --no-verify
+    # RECOMMIT, e.g. after git reset --soft to get commit message back
+    recommmit = commit --reuse-message=ORIG_HEAD
 
     # self explanatory
     unstage = restore --staged
-    blat = reset --hard HEAD
+    rbi = rebase -i main
 [core]
 	editor = nvim
 [include]
