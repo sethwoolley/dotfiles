@@ -65,8 +65,8 @@ fi
 banner "Starting setup for arch $ARCH"
 run mkdir -p ~/bin
 run mkdir -p ~/code
-run ln -s ~/.config/dotfiles/.gitconfig ~/.gitconfig
-run ln -s ~/.config/dotfiles/scripts/ ~/scripts/
+ln_safe ~/.config/dotfiles/.gitconfig ~/.gitconfig
+ln_safe ~/.config/dotfiles/scripts/ ~/scripts/
 
 # set ~/.gituser file
 if [ -n "$GIT_USER" ] && [ -n "$GIT_EMAIL" ]; then
@@ -92,7 +92,7 @@ banner "Installing wezterm"
 setup/install_wezterm.sh
 
 banner "Symlink i3"
-ln -s ~/.config/dotfiles/i3 ~/.config/i3
+ln_safe ~/.config/dotfiles/i3 ~/.config/i3
 
 banner "Installing fzf from git"
 setup/install_fzf.sh
