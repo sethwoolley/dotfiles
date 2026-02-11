@@ -1,6 +1,7 @@
 DOTFILES_ROOT=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && cd .. && pwd )
 : "${PLAIN_OUTPUT:=}"
 ARCH=$(uname -a | grep -Eo '(x86_64|arm64)' | head -n1)
+FORCE=${FORCE:-}
 
 
 COLOUR_BANNER='\e[38;5;228m'
