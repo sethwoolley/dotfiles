@@ -120,3 +120,18 @@ run() {
     return $rc
   fi
 }
+
+ln_safe() {
+    # redirect $1 to $2
+    local src="$1"
+    local dst="$2"
+
+    if [ -e "$dst" ] || [ -L "$dst" ]; then
+        if [ -L "$dst" ] && [ "$(readlink "$dst")" == "$src" ]; then
+            msg "Using existing symlink $src"
+            return 0
+        fi
+    fi
+
+    run ln -s "$src" "$dst"
+}
