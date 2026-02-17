@@ -94,8 +94,9 @@ setup/install_wezterm.sh
 banner "Symlink i3"
 ln_safe ~/.config/dotfiles/i3 ~/.config/i3
 
-banner "Installing fzf from git"
+banner "Installing tools"
 setup/install_fzf.sh
+setup/install_bat.sh
 
 banner "Setting wallpaper"
 setup/set_wallpaper.sh
