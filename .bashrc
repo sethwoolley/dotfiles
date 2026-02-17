@@ -22,6 +22,8 @@ alias fkill="ps -ax | fzf | awk '{print $1}' | xargs kill"
 alias imgcat="wezterm imgcat"
 
 alias meq="squeue"
+alias cat="batcat -pP"
+alias bless="batcat --paging=always"
 
 # Stonks
 alias stonks='curl terminal-stocks.dev/ARM,AMD'
