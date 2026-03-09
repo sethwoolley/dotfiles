@@ -24,6 +24,9 @@
     # RECOMMIT, e.g. after git reset --soft to get commit message back
     recommmit = commit --reuse-message=ORIG_HEAD
 
+    wip = commit -a -m 'wip'
+    unwip = reset HEAD~
+
     # self explanatory
     unstage = restore --staged
     rbi = rebase -i main
