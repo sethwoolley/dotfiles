@@ -2,6 +2,15 @@
 
 I haven't worked out how to script firefox setup yet.
 
+## Preferences
+
+Go to `about:preferences`
+* "Open previous windows and tabs" -> On
+
+Ctrl+F "Sponsored"
+* "Support Firefox" -> Off
+* "Suggestions from sponsors" -> Off
+
 ## Tree Style Tabs setup
 
 Gets rid of firefox tabs, firefox's own sidebar, and adds tree-style-tab.
