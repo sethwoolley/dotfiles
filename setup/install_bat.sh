@@ -30,6 +30,8 @@ if command -v batcat --version >/dev/null 2>&1; then
     fi
 fi
 
-sudo apt install bat -y
+run sudo apt install bat -y
+
+run mkdir $HOME/.config/bat/
 
 ln_safe $DOTFILES_ROOT/misc/bat-config $HOME/.config/bat/config 
