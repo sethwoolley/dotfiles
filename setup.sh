@@ -97,6 +97,7 @@ ln_safe ~/.config/dotfiles/i3 ~/.config/i3
 banner "Installing tools"
 setup/install_fzf.sh
 setup/install_bat.sh
+setup/install_misc.sh
 
 banner "Setting wallpaper"
 setup/set_wallpaper.sh
@@ -112,3 +113,5 @@ if [ -f "$HOME/.config/dotfiles/.bashrc" ]; then
     source "$HOME/.config/dotfiles/.bashrc"
 fi
 EOF
+
+banner "Done!"
