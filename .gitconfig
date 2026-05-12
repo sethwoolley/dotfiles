@@ -68,6 +68,9 @@
 [rebase]
         autoSquash = true
         autoStash = true
+        # when rebasing on a branch that's branched from another, update that branch too
         updateRefs = true
+        # try to infer the point a branch forked from a branch you're rebasing onto
+        fork-point = true
 [pull]
         rebase = true
