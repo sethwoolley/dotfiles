@@ -16,6 +16,7 @@ alias ls='ls --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias diff='git diff --no-index'
 
 alias resource='source ~/.bashrc'
 alias fkill="ps -ax | fzf | awk '{print $1}' | xargs kill"
