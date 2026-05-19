@@ -3,9 +3,11 @@
     # Branch LOG
     blog = log -p main..
     # Overview log
-    olog = log --graph --oneline --all
+    olog = log --oneline --graph --all --decorate-refs=refs/heads --decorate-refs=refs/tags --decorate-refs=HEAD --decorate-refs=refs/remotes/origin/master --decorate-refs=refs/remotes/origin/main
     # above, but watched
-    blogwatch = "!watch -tc git log --oneline --graph --all --color=always --decorate"
+    blogwatch = "!watch -tc git olog --color=always --decorate"
+    # olog with all of upstream
+    oolog = log --graph --oneline --all
 
     # absolutely nuke the repo and all submodules
     rinse = !git reset --hard --recurse-submodule && \
@@ -32,6 +34,7 @@
     rbi = rebase -i main
 [core]
 	editor = nvim
+	excludesFile = ~/.gitignore
 [include]
     # Get git user/email from another file, so when using these dotfiles on a work
     # system, it's easier to set up.
