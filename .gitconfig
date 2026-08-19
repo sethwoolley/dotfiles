@@ -3,7 +3,21 @@
     # Branch LOG
     blog = log -p main..
     # Overview log
-    olog = log --oneline --graph --all --decorate-refs=refs/heads --decorate-refs=refs/tags --decorate-refs=HEAD --decorate-refs=refs/remotes/origin/master --decorate-refs=refs/remotes/origin/main
+    # Only shows local branches, and upstream branches that are checked out locally
+	olog = "!f() { \
+	  git log --oneline --graph \
+	    --decorate-refs=refs/heads \
+	    --decorate-refs=refs/tags \
+	    --decorate-refs=HEAD \
+	    --branches \
+	    $(git for-each-ref --format='%(refname:short)' refs/heads | \
+	      while IFS= read -r branch; do \
+	        if git show-ref --verify --quiet \"refs/remotes/origin/$branch\"; then \
+	          printf '%s\\n' \"--decorate-refs=refs/remotes/origin/$branch\" \"refs/remotes/origin/$branch\"; \
+	        fi; \
+	      done) \
+	    \"$@\"; \
+	}; f"
     # above, but watched
     blogwatch = "!watch -tc git olog --color=always --decorate"
     # olog with all of upstream
