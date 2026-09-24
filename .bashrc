@@ -4,6 +4,8 @@ case $- in
       *) return;;
 esac
 
+export EDITOR=vim
+
 HISTCONTROL=ignoreboth
 shopt -s histappend
 HISTSIZE=1000
