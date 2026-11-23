@@ -136,4 +136,13 @@ return {
     ft = "lua", -- only load on lua files
     opts = {},
   },
+
+  -- hledger
+  {
+    "ledger/vim-ledger",
+    config = function()
+        vim.g.ledger_bin = "hledger"
+        vim.g.ledger_is_hledger = true
+    end,
+  },
 }
